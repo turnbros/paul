@@ -33,11 +33,7 @@ variable "ingress_annotations" {
 }
 
 ## Discord Connectivity Settings ###
-variable "discord_client_id" {
-  type        = string
-  description = ""
-}
-variable "discord_client_secret" {
+variable "discord_bot_token" {
   type        = string
   description = ""
 }
