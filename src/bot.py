@@ -11,11 +11,11 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-    print(message.content)
-    message.content.
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
-    else:
-        await message.channel.send('I dont understand')
+
+    app_info = await client.application_info()
+
+    if message.content.startswith(f"<@!{app_info.id}>"):
+        if "how are you" in message.content.lower():
+            await message.channel.send("I'm fine, thank you for asking!")
 
 client.run(os.getenv("DISCORD_TOKEN"))
