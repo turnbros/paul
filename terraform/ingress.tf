@@ -18,7 +18,12 @@ resource "kubernetes_ingress" "ingress" {
     rule {
       host = var.ingress_host
       http {
+
         path {
+          backend {
+            service_name = kubernetes_service.service.metadata.0.name
+            service_port = kubernetes_service.service.spec.0.port.0.target_port
+          }
           path = "/"
         }
       }
