@@ -19,5 +19,8 @@ COPY --chown=paul  src /paul
 # We are Paul
 USER paul
 
+# If we speak in here Paul will hear us
+EXPOSE 8443
+
 # Wake up Paul!
-SHELL ["/usr/local/bin/python", "app.py"]
+CMD ["/usr/local/bin/python", "main.py"]
