@@ -8,7 +8,7 @@ def hello():
     return "Hello, my name is Paul!"
 
 @app.route("/healthz")
-def hello():
+def healthz():
     return "I feel healthy and alive!"
 
 bind_ip = os.getenv("BIND_IP", "0.0.0.0")
