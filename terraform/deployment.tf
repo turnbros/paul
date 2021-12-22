@@ -8,7 +8,7 @@ resource "kubernetes_namespace" "namespace" {
 
 resource "kubernetes_deployment" "deployment" {
   metadata {
-    name = local.name
+    name      = local.name
     namespace = kubernetes_namespace.namespace.metadata.0.name
   }
   spec {
@@ -28,11 +28,11 @@ resource "kubernetes_deployment" "deployment" {
         service_account_name            = kubernetes_service_account.service_account.metadata.0.name
         automount_service_account_token = false
         container {
-          name = local.name
-          image = var.image
+          name              = local.name
+          image             = var.image
           image_pull_policy = var.image_pull_policy
           env {
-            name = "BIND_IP"
+            name  = "BIND_IP"
             value = var.bind_ip
           }
           env {
@@ -40,11 +40,11 @@ resource "kubernetes_deployment" "deployment" {
             value = var.bind_port
           }
           env {
-            name = "DEBUG_PAUL"
+            name  = "DEBUG_PAUL"
             value = tostring(var.debug_enabled)
           }
           env {
-            name = "K8S_ENDPOINT"
+            name  = "K8S_ENDPOINT"
             value = var.kubernetes_endpoint
           }
           port {
