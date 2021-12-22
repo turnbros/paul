@@ -1,4 +1,3 @@
-# TODO: Add security context settings to force the container to run as a non-root user/group and drop all capabilities. (Shouldn't really require much effort)
 resource "kubernetes_deployment" "deployment" {
   metadata {
     name      = local.name
