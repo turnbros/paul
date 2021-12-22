@@ -25,7 +25,7 @@ jobs:
       id: image_vars
       run: |
         # Construct an image id and includes the repo.
-        IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+        IMAGE_ID=ghcr.io/${{ github.repository }}/$IMAGE_NAME
         # Strip git ref prefix from version.
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         # Strip "v" prefix from tag name.
@@ -36,6 +36,7 @@ jobs:
         # Set variables that can be used in other steps.
         echo ::set-output name=repo::$(echo $IMAGE_ID | awk '{print tolower($0)}')
         echo ::set-output name=tag::$(echo $VERSION | awk '{print tolower($0)}')
+
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag ${{steps.image_vars.outputs.repo}}:${{steps.image_vars.outputs.tag}}
 
