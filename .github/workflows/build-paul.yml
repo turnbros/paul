@@ -20,7 +20,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Login to github docker Registry
-      run: docker login docker.pkg.github.com -u iamangus -p ${{ secrets.GITHUB_TOKEN }}
+      run: docker login ghcr.io -u dylanturn -p ${{ secrets.GITHUB_TOKEN }}
     - name: Set the image repo name and tag
       id: image_vars
       run: |
