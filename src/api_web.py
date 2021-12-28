@@ -14,7 +14,9 @@ def healthz():
 
 @app.route("/api/v1/workflow", methods=["PUT"])
 def register_workflow():
-    pass
+    workflow_json = json.loads(request.data)
+    workflow_queue = workflow_json["queue"]
+    workflow_namespace = workflow_json["namespace"]
 
 @app.route("/api/v1/fulfillment", methods=["POST"])
 def fulfillment():
