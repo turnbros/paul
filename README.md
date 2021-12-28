@@ -16,3 +16,24 @@ Here is what we still need to do to make Paul a real boy.
 
 ## This is how we interact with Paul
 ![alt text](docs/paul.drawio.svg)
+
+### Development with Telepresence
+Make sure Telepresence is installed
+```
+brew install datawire/blackbird/telepresence
+```
+
+List the services
+```
+telepresence list -n paul
+```
+
+Get the service you wish to highjack
+```
+kubectl get service -n paul paul --output yaml
+```
+
+Intercept the service traffic
+```
+telepresence intercept -n paul paul --port 8443:http --env-file ./paul-intercept.env
+```

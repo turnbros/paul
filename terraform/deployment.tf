@@ -2,6 +2,9 @@ resource "kubernetes_deployment" "deployment" {
   metadata {
     name      = local.name
     namespace = kubernetes_namespace.namespace.metadata.0.name
+    labels = merge({
+      "app.kubernetes.io/name" : local.name
+    }, var.labels)
   }
   spec {
     replicas = var.replica_count
@@ -40,8 +43,20 @@ resource "kubernetes_deployment" "deployment" {
             value = var.kubernetes_endpoint
           }
           env {
+            name  = "K8S_ENDPOINT"
+            value = var.kubernetes_endpoint
+          }
+          env {
             name  = "DISCORD_TOKEN"
             value = var.discord_bot_token
+          }
+          env {
+            name = "SA_MOUNT_PATH"
+            value = var.service_account_mount_path
+          }
+          env {
+            name = "CONFIGMAP_NAME"
+            value = var.configmap_name
           }
           port {
             container_port = var.bind_port
@@ -74,7 +89,7 @@ resource "kubernetes_deployment" "deployment" {
           }
           volume_mount {
             name       = "service-token"
-            mount_path = "/var/run/secrets/kubernetes.io/serviceaccount/"
+            mount_path = var.service_account_mount_path
             read_only  = true
           }
         }

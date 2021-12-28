@@ -14,6 +14,11 @@ variable "debug_enabled" {
   description = "Should Paul smile less and talk more?"
   default     = false
 }
+variable "pauls_config" {
+    type = map(any)
+    description = "(optional) Pauls configuration"
+    default = {}
+}
 
 ### Ingress Settings for Paul ###
 variable "ingress_host" {
@@ -61,6 +66,11 @@ variable "replica_count" {
   description = "How many Pauls?"
   default     = 1
 }
+variable "configmap_name" {
+  type = string
+  description = "What is the name of Pauls configmap?"
+  default = "paul-cm"
+}
 variable "cpu_request" {
   type        = string
   description = "How fast do we expect Paul to think?"
@@ -80,6 +90,11 @@ variable "memory_limit" {
   type        = string
   description = "How much should we allow Paul to remember?"
   default     = "128Mi"
+}
+variable "service_account_mount_path" {
+  type = string
+  default = "/var/run/secrets/kubernetes.io/serviceaccount/"
+  description = "Where will we mount Pauls service account token?"
 }
 variable "labels" {
   type        = map(string)
