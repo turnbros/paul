@@ -11,7 +11,9 @@ WORKDIR /paul
 COPY --chown=paul  requirements.txt /paul/requirements.txt
 
 # Install Pauls' requirements
-RUN pip install -r requirements.txt
+RUN pip install --upgrade pip && \
+    pip install setuptools && \
+    pip install -r requirements.txt
 
 # Copy in what makes Paul, Paul
 COPY --chown=paul  src /paul

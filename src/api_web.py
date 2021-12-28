@@ -12,6 +12,10 @@ def hello():
 def healthz():
     return "I feel healthy and alive!"
 
+@app.route("/api/v1/workflow", methods=["PUT"])
+def register_workflow():
+    pass
+
 @app.route("/api/v1/fulfillment", methods=["POST"])
 def fulfillment():
     json.loads(request.data)

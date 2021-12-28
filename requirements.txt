@@ -1,4 +1,4 @@
 flask==2.0.2
 kubernetes==21.7.0
 py-cord==1.7.3
-temporal==1.0.0
+temporal-python-sdk==1.0.19
