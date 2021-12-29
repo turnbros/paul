@@ -11,7 +11,8 @@ WORKDIR /paul
 COPY --chown=paul  requirements.txt /paul/requirements.txt
 
 # Install Pauls' requirements
-RUN pip install --upgrade pip && \
+RUN apk add build-base && \
+    pip install --upgrade pip && \
     pip install setuptools && \
     pip install -r requirements.txt
 
