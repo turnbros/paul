@@ -1,5 +1,5 @@
 # This is Pauls' reality
-FROM python:3.10-alpine
+FROM python:3.8-slim
 
 # This is Paul
 RUN adduser -h "/paul" -u 3240 -g "Paul" -D paul
