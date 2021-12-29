@@ -7,7 +7,7 @@ from threading import Thread
 import sys
 sys.path.append("/Users/dylanturnbull/Documents/projects/paul/src")
 from util import kubernetes
-
+import os
 
 logging.basicConfig(level=logging.INFO)
 
