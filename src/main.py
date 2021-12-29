@@ -31,9 +31,11 @@ if __name__ == "__main__":
 
     threading.Thread(name="flask", target=lambda: api_web.app.run(host=bind_ip, port=bind_port, debug=debug_mode)).start()
 
-    discord_loop = asyncio.new_event_loop()
-    discord_task = discord_loop.create_task(api_lang.start_client(discord_token))
-    threading.Thread(name="discord", target=lambda: discord_loop.run_forever()).start()
+    # discord_loop = asyncio.new_event_loop()
+    # discord_task = discord_loop.create_task(api_lang.start_client(discord_token))
+    # threading.Thread(name="discord", target=lambda: discord_loop.run_forever()).start()
     
-    while True:
-        pass
+    #while True:
+    #    pass
+
+    api_lang.start_client(discord_token)
