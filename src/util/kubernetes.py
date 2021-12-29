@@ -1,5 +1,7 @@
 import os
 from kubernetes import client, config
+import kubernetes
+from kubernetes.client.api.core_v1_api import CoreV1Api
 
 configmap_name = os.getenv("CONFIGMAP_NAME")
 k8s_endpoint = os.getenv("K8S_ENDPOINT")
@@ -9,9 +11,11 @@ configmap_name = os.getenv("CONFIGMAP_NAME")
 class Cluster:
 	def __init__(self, use_kubeconfig:bool = True):
 		
-		# Read the namespace this deployment is n
-		with open(f"{sa_mount_path}/namespace") as namespace_file:
-			self.namespace = namespace_file.read()
+		self.namespace = os.getenv("K8S_NAMESPACE")
+		if self.namespace is None:
+			# Read the namespace this deployment is n
+			with open(f"{sa_mount_path}/namespace") as namespace_file:
+				self.namespace = namespace_file.read()
 
 		# Configure the config or something
 		if not use_kubeconfig:
@@ -24,10 +28,25 @@ class Cluster:
 				self.kube_api = client.CoreV1Api(client.ApiClient(kube_config))
 		else:
 			config.load_kube_config()
-			self.kube_api = client.CoreV1Api()
+			self._kube_api = client.CoreV1Api()
 
 		self.config = self.refresh_config
 	
+	@property
+	def api(self) -> CoreV1Api:
+		return self._kube_api
+
 	def refresh_config(self) -> dict:
-		configmap = self.kube_api.read_namespaced_config_map(configmap_name, self.namespace)
+		configmap = self.api.list_pod_for_all_namespaces()
 		return configmap.data
+
+	
+	def client(self):
+		pass
+
+
+
+	def count_game_servers(self):
+		pod_list = self.api.list_pod_for_all_namespaces()
+		print(pod_list)
+		return pod_list.items

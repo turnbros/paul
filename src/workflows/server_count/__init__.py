@@ -1,13 +1,17 @@
 import asyncio
+from importlib import util
 import logging
-from datetime import timedelta
-
 from temporal.workerfactory import WorkerFactory
 from temporal.workflow import workflow_method, Workflow, WorkflowClient
+from threading import Thread
+import sys
+sys.path.append("/Users/dylanturnbull/Documents/projects/paul/src")
+from util import kubernetes
 
 
 logging.basicConfig(level=logging.INFO)
 
+kube = kubernetes.Cluster()
 
 TASK_QUEUE = "ServerCount"
 NAMESPACE = "default"
@@ -23,7 +27,9 @@ class WorkflowStub:
 # Workflow Implementation
 class Workflow(WorkflowStub):
     async def execute(self, payload: dict):
-        return f"Howdy, {payload.get('name')}, the answer is {payload.get('count')}!"
+        gs_count = kube.count_game_servers()
+        print(gs_count)
+        return f"Howdy, {payload.get('name')}, the answer is {len(gs_count)}!"
 
 
 async def worker_main():
@@ -35,8 +41,13 @@ async def worker_main():
     print("Worker started")
 
 
+async def start_worker():
+    asyncio.ensure_future(worker_main())
+
+
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     asyncio.ensure_future(worker_main())
     loop.run_forever()
-
+    
+    print("done")

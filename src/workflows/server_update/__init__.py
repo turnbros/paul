@@ -35,8 +35,13 @@ async def worker_main():
     print("Worker started")
 
 
+async def start_worker():
+    asyncio.ensure_future(worker_main())
+
+    
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
+    loop = asyncio.new_event_loop()
     asyncio.ensure_future(worker_main())
     loop.run_forever()
-
+    
+    print("done")

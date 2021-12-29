@@ -14,6 +14,13 @@ Here is what we still need to do to make Paul a real boy.
 - Teach Paul how to talk and help Paul understand how we're going to talk to him.
 - Understand the scope of the second and third item so they can be broken down into actionable subtasks
 
+## Getting Started
+Environtment Variables
+```
+export K8S_NAMESPACE=temporal
+export DISCORD_TOKEN=""
+```
+
 ## This is how we interact with Paul
 ![alt text](docs/paul.drawio.svg)
 
