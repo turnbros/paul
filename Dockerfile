@@ -12,6 +12,7 @@ COPY --chown=paul  requirements.txt /paul/requirements.txt
 
 # Install Pauls' requirements
 RUN apk add build-base && \
+    apk add linux-headers && \
     pip install --upgrade pip && \
     pip install setuptools && \
     pip install -r requirements.txt
