@@ -4,4 +4,4 @@ metadata:
   name: paul-cm
 data:
   intent_workflow_routes:
-    {{- .Values.intent_workflow_routes | nindent 4 }}
+    {{ .Values.intent_workflow_routes }}
