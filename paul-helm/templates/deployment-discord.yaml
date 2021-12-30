@@ -28,7 +28,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/usr/local/bin/python"]
-          args: ["app-lang.py"]
+          args: ["app-discord.py"]
           envFrom:
             - secretRef:
                 name: discord-token
