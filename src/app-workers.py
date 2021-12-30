@@ -51,10 +51,11 @@ def start_worker(name):
 
 
 if __name__ == "__main__":
+    logging.info("Starting worker registration...")
     k8s_client = kubernetes.Cluster()
     config = k8s_client.read_configmap()
     routes = config["intent_workflow_routes"]
-    logging.info("Starting worker registration...")
+    logging.info("Registering workers...")
     for worker in routes.values():
         if register_worker(worker):
             start_worker(worker)
