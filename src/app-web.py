@@ -43,6 +43,7 @@ def register_workflow():
 async def fulfillment():
     try:
         request_json = json.loads(request.data)
+        print(request_json)
         intent_name = request_json["queryResult"]["intent"]["name"]
         intent_parameters = request_json["queryResult"]["parameters"]
         logging.info(f"Execute worker: {intent_name}")
