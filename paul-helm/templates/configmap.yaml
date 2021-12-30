@@ -2,5 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: "paul-cm"
-data: |
-  {{ toJson .Values.config }}
+data:
+  config: |
+    {{ toJson .Values.config }}
