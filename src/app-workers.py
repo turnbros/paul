@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import asyncio
 import logging
@@ -8,7 +9,7 @@ from util import kubernetes
 from http.client import HTTPSConnection, HTTPConnection
 
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
 
 if os.getenv("KUBERNETES_SERVICE_HOST", False):

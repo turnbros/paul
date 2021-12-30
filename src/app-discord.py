@@ -1,13 +1,16 @@
 import os
+import sys
 import json
 import discord
+import logging
 from http.client import HTTPSConnection, responses
 
 client = discord.Client()
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
 @client.event
 async def on_ready():
-    print(f'I have logged in as {client.user}')
+    logging.info(f'I have logged in as {client.user}')
 
 @client.event
 async def on_message(message):
@@ -15,7 +18,7 @@ async def on_message(message):
         return
 
     app_info = await client.application_info()
-    print(message)
+    logging.info(message)
     if message.content.startswith(f"<@!{app_info.id}>"):
         request_message = message.content.lower().replace(f"<@!{app_info.id}>", '')
         request_endpoint = os.getenv("DIALOGFLOW_ENDPOINT")
