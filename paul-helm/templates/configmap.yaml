@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: paul-cm
+data:
+  intent_workflow_routes:
+    {{- .Values.intent_workflow_routes | nindent 4 }}

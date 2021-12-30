@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+intent_workflow_routes:
+  projects/paul-fmma/agent/intents/a4f46c93-b72e-4b26-bced-e492e53d45d6: server_count
+
 replicaCount: 1
 
 image:
