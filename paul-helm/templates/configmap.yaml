@@ -3,4 +3,5 @@ kind: ConfigMap
 metadata:
   name: paul-cm
 data:
-  intent_workflow_routes: {{ toJson .Values.intent_workflow_routes }}
+  intent_workflow_routes: |
+    {{ toJson .Values.intent_workflow_routes }}
