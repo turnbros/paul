@@ -20,6 +20,7 @@ async def on_message(message):
     app_info = await client.application_info()
     logging.info(message)
     if message.content.startswith(f"<@!{app_info.id}>"):
+
         request_message = message.content.lower().replace(f"<@!{app_info.id}>", '')
         request_endpoint = os.getenv("DIALOGFLOW_ENDPOINT")
         request_path = os.getenv('DIALOGFLOW_PATH')

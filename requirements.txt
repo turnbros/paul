@@ -1,4 +1,4 @@
-flask==2.0.2
+flask[async]==2.0.2
 kubernetes==21.7.0
 py-cord==1.7.3
 temporal-python-sdk==1.0.19
