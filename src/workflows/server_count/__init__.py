@@ -28,7 +28,6 @@ class WorkflowStub:
 class Workflow(WorkflowStub):
     async def execute(self, payload: dict):
         gs_count = kube.count_game_servers()
-        print(gs_count)
         return f"Howdy, {payload.get('name')}, the answer is {len(gs_count)}!"
 
 def get_temporal_ep():

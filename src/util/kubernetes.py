@@ -25,7 +25,7 @@ class Cluster:
 				kube_config.api_key_prefix['authorization'] = 'Bearer'
 				kube_config.host = self.kubernetes_host
 				kube_config.ssl_ca_cert = f"{self.sa_mount_path}/ca.crt"
-				self.kube_api = client.CoreV1Api(client.ApiClient(kube_config))
+				self._kube_api = client.CoreV1Api(client.ApiClient(kube_config))
 
 		else:
 			# This is NOT running inside K8s
@@ -41,14 +41,10 @@ class Cluster:
 	def refresh_config(self) -> dict:
 		configmap = self.api.list_pod_for_all_namespaces()
 		return configmap.data
-
 	
 	def client(self):
 		pass
 
-
-
 	def count_game_servers(self):
 		pod_list = self.api.list_pod_for_all_namespaces()
-		print(pod_list)
 		return pod_list.items
