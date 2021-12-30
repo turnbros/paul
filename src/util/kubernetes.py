@@ -13,6 +13,7 @@ class Cluster:
 	def __init__(self):
 		
 		self.kubernetes_host = os.getenv("KUBERNETES_SERVICE_HOST", False)
+		self.kubernetes_port = os.getenv("KUBERNETES_SERVICE_PORT", False)
 		self.sa_mount_path = "/run/secrets/kubernetes.io/serviceaccount"
 		self.namespace = "paul"
 		self.configmap_name = "paul-cm"
@@ -25,8 +26,8 @@ class Cluster:
 				kube_config = client.Configuration()
 				#kube_config.api_key["authorization"] = token_file.read()
 				#kube_config.api_key_prefix['authorization'] = 'Bearer'
-				kube_config.api_key = {"Authorization": "Bearer " + token_file.read()}
-				kube_config.host = self.kubernetes_host
+				kube_config.api_key = {"authorization": f"Bearer {token_file.read()}"}
+				kube_config.host =  f"https://{self.kubernetes_host}:{self.kubernetes_port}"
 				kube_config.ssl_ca_cert = f"{self.sa_mount_path}/ca.crt"
 				self._kube_api = client.CoreV1Api(client.ApiClient(kube_config))
 
