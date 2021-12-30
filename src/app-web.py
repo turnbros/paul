@@ -23,7 +23,11 @@ def healthz():
 
 @app.route("/api/v1/workflows", methods=["GET"])
 def get_workflows():
-    return jsonify(list(workflow_catalog.workflows.items()))
+    workflow_names = []
+    workflow_list = workflow_catalog.workflows.items()
+    for workflow in workflow_list:
+        workflow_names.append(workflow.name)
+    return jsonify(workflow_names)
 
 @app.route("/api/v1/workflows", methods=["PUT"])
 def register_workflow():
