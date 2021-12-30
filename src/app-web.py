@@ -23,14 +23,13 @@ def healthz():
 
 @app.route("/api/v1/workflows", methods=["GET"])
 def get_workflows():
-    Response(workflow_catalog.workflows.items(), status=200, content_type="application/json")
-
+    return jsonify(workflow_catalog.workflows.items())
 
 @app.route("/api/v1/workflows", methods=["PUT"])
 def register_workflow():
     worker_registration = json.loads(request.data)
     worker_name = worker_registration["name"]
-    logging.info(worker_name)
+    logging.debug(f"Register workflow worker {worker_name}")
     if workflow_catalog.register_workflow(worker_name):
         return "", 204
     return "", 500

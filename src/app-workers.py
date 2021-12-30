@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import time
 import asyncio
 import logging
 import importlib
@@ -37,7 +38,7 @@ def register_worker(name):
         logging.info(f"{name} registered!")
         return True
     else:
-        logging.info(f"Failed to register {name}")
+        logging.info(f"Failed to register {name}. Got response {response.status} - {response.read()}")
         return False
 
 
@@ -62,4 +63,4 @@ if __name__ == "__main__":
     logging.info("Worker registration complete")
 
     while(True):
-        pass
+        time.sleep(5)
