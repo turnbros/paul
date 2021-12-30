@@ -13,8 +13,8 @@ logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
 
 if os.getenv("KUBERNETES_SERVICE_HOST", False):
-    web_api_scheme = "https"
-    web_api_host = "paul-web-api.paul.svc.cluster.local"
+    web_api_scheme = "http"
+    web_api_host = "paul.paul.svc.cluster.local"
     web_api_port = 8443
 else:
     web_api_scheme = "http"

@@ -24,8 +24,6 @@ class Cluster:
 
 			with open(f"{self.sa_mount_path}/token") as token_file:	
 				kube_config = client.Configuration()
-				#kube_config.api_key["authorization"] = token_file.read()
-				#kube_config.api_key_prefix['authorization'] = 'Bearer'
 				kube_config.api_key = {"authorization": f"Bearer {token_file.read()}"}
 				kube_config.host =  f"https://{self.kubernetes_host}:{self.kubernetes_port}"
 				kube_config.ssl_ca_cert = f"{self.sa_mount_path}/ca.crt"
