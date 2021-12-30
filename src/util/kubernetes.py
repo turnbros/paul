@@ -25,7 +25,7 @@ class Cluster:
 				kube_config = client.Configuration()
 				kube_config.api_key["authorization"] = token_file.read()
 				kube_config.api_key_prefix['authorization'] = 'Bearer'
-				kube_config.host = self.kubernetes_host
+				kube_config.host = f"{self.kubernetes_host}:443"
 				kube_config.ssl_ca_cert = f"{self.sa_mount_path}/ca.crt"
 				self._kube_api = client.CoreV1Api(client.ApiClient(kube_config))
 
