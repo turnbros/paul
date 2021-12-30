@@ -21,7 +21,7 @@ def register_intent_workflow(workflow_name):
 
 async def execute_intent_workflow(intent_workflow, **kwargs):
     print(f"execute_intent_workflow: {intent_workflow}")
-
+    register_intent_workflow(intent_workflow)
     temporal_endpoint = get_temporal_ep()
     client = WorkflowClient.new_client(host=temporal_endpoint[0], port=temporal_endpoint[1], namespace=NAMESPACE)
     registered_workflow: registered_intents[intent_workflow].WorkflowStub = client.new_workflow_stub(registered_intents[intent_workflow].WorkflowStub)
