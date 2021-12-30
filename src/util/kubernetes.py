@@ -1,4 +1,5 @@
 import os
+import json
 from kubernetes import client, config
 import kubernetes
 from kubernetes.client.api.core_v1_api import CoreV1Api
@@ -48,7 +49,8 @@ class Cluster:
 
 	def read_configmap(self):
 		configmap = self.api.read_namespaced_config_map(self.configmap_name, self.namespace)
-		return configmap.data
+		config_json = json.loads(configmap.data["config"])
+		return config_json
 
 	def count_game_servers(self):
 		pod_list = self.api.list_pod_for_all_namespaces()
