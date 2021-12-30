@@ -29,16 +29,24 @@ if __name__ == "__main__":
     server_update_task = server_update_loop.create_task(server_update.worker_main())
     threading.Thread(name="server_update_worker", target=lambda: server_update_loop.run_forever()).start()
 
-    #threading.Thread(name="flask", target=lambda: api_web.app.run(host=bind_ip, port=bind_port, debug=debug_mode)).start()
 
-    flask_loop = asyncio.new_event_loop()
-    flask_task = flask_loop.create_task(api_web.app.run(host=bind_ip, port=bind_port, debug=False, use_reloader=False))
-    threading.Thread(name="server_update_worker", target=lambda: flask_loop.run_forever()).start()
+
+    #threading.Thread(name="flask", target=lambda: api_web.app.run(host=bind_ip, port=bind_port, debug=debug_mode)).start()
+    #print(server_update_task.print_stack())
+    #flask_loop = asyncio.new_event_loop()
+    #flask_task = flask_loop.create_task(api_web.start_webserver())
+    #threading.Thread(name="server_update_worker", target=lambda: flask_loop.run_forever()).start()
+    
+    threading.Thread(name="flask", target=lambda: api_web.start_webserver()).start()
+
+    print("made it here")
 
     discord_loop = asyncio.new_event_loop()
     discord_task = discord_loop.create_task(api_lang.start_client(discord_token))
     threading.Thread(name="discord", target=lambda: discord_loop.run_forever()).start()
     
+    print("and here")
+
     while True:
         pass
 

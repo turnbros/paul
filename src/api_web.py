@@ -38,3 +38,6 @@ def fulfillment():
             }
         ]
     })
+
+def start_webserver():
+    app.run(host="0.0.0.0", port=8443, debug=False, use_reloader=False)
