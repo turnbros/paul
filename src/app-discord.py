@@ -49,10 +49,13 @@ async def on_message(message):
             response_json = json.loads(response_data)
             
             await message.channel.send(response_json["queryResult"]["fulfillmentText"])
+
         else:
             await message.channel.send("oh dear, something fucked up :-(")
             await message.channel.send("I blame @desidero for making me too complicated")
 
 
-def start_client(discord_token):
-    client.run(discord_token)
+if __name__ == "__main__":
+    discord_token = os.getenv("DISCORD_TOKEN", False)
+    if discord_token:
+        client.run(discord_token)

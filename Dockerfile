@@ -24,4 +24,4 @@ USER paul
 EXPOSE 8443
 
 # Wake up Paul!
-CMD ["/usr/local/bin/python", "main.py"]
+#CMD ["/usr/local/bin/python", "main.py"]

@@ -9,11 +9,12 @@ from kubernetes.client.api.core_v1_api import CoreV1Api
 # configmap_name = os.getenv("CONFIGMAP_NAME")
 
 class Cluster:
-	def __init__(self, use_kubeconfig:bool = True):
+	def __init__(self):
 		
 		self.kubernetes_host = os.getenv("KUBERNETES_SERVICE_HOST", False)
 		self.sa_mount_path = "/run/secrets/kubernetes.io/serviceaccount"
-		self.namespace = None
+		self.namespace = "paul"
+		self.configmap_name = "paul-cm"
 
 		if self.kubernetes_host:
 			with open(f"{self.sa_mount_path}/namespace") as namespace_file:
@@ -44,6 +45,10 @@ class Cluster:
 	
 	def client(self):
 		pass
+
+	def read_configmap(self):
+		configmap = self.api.read_namespaced_config_map(self.configmap_name, self.namespace)
+		return configmap.data
 
 	def count_game_servers(self):
 		pod_list = self.api.list_pod_for_all_namespaces()
