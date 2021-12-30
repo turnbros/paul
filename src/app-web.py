@@ -44,7 +44,7 @@ async def fulfillment():
     try:
         request_json = json.loads(request.data)
         print(request_json)
-        intent_name = request_json["queryResult"]["intent"]["name"]
+        intent_name = request_json["queryResult"]["intent"]["displayName"]
         intent_parameters = request_json["queryResult"]["parameters"]
         logging.info(f"Execute worker: {intent_name}")
         response_text = await intent_routes.execute_intent_workflow(intent_name, name="fuckface")
