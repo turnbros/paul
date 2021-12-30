@@ -30,7 +30,7 @@ def register_worker(name):
     else:
         connection = HTTPConnection(host=web_api_host, port=web_api_port)
 
-    connection.request('PUT', "/api/v1/workflow", body=json.dumps({
+    connection.request('PUT', "/api/v1/workflows", body=json.dumps({
         "name": name
     }))
     response = connection.getresponse()
