@@ -3,3 +3,6 @@ kubernetes==21.7.0
 py-cord==1.7.3
 temporal-python-sdk==1.0.19
 waitress==2.0.0
+shortuuid==1.0.8
+google-auth==1.35.0
+google-cloud-dialogflow==2.10.0

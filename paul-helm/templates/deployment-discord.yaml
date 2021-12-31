@@ -34,6 +34,14 @@ spec:
                 name: discord-token
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: dialogflow-credentials
+              mountPath: "/paul"
+              readOnly: true
+      volumes:
+        - name: dialogflow-credentials
+          secret:
+            secretName: dialogflow-credentials
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

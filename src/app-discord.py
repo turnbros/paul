@@ -1,9 +1,14 @@
 import os
 import sys
-import json
 import discord
 import logging
-from http.client import HTTPSConnection, responses
+from src.dialogflow import PaulDialog
+
+paul_dialog = PaulDialog(
+      key_path = os.getenv('DIALOGFLOW_CRED_PATH'),
+      project_id = os.getenv('DIALOGFLOW_PROJECT_ID'),
+      language_code = os.getenv("DIALOGFLOW_LANG_CODE")
+    )
 
 client = discord.Client()
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
@@ -19,42 +24,16 @@ async def on_message(message):
 
     app_info = await client.application_info()
     logging.info(message)
+
     if message.content.startswith(f"<@!{app_info.id}>"):
+        try:
+            request_message = message.content.lower().replace(f"<@!{app_info.id}>", '')
+            session_id = paul_dialog.create_session()
+            response = paul_dialog.handle_input(session_id, request_message)
+            await message.channel.send(response["queryResult"]["fulfillmentText"])
 
-        request_message = message.content.lower().replace(f"<@!{app_info.id}>", '')
-        request_endpoint = os.getenv("DIALOGFLOW_ENDPOINT")
-        request_path = os.getenv('DIALOGFLOW_PATH')
-        request_headers = { 
-            "Content-Type" : "application/json; charset=utf-8",
-            "Authorization" : f"Bearer {os.getenv('DIALOGFLOW_TOKEN')}"
-        }
-        request_body = {
-            "queryInput": {
-                "text": {
-                    "text": request_message,
-                    "languageCode": "en"
-                }
-            },
-            "queryParams": {
-                "source": "DIALOGFLOW_CONSOLE",
-                "timeZone": "America/Chicago",
-                "sentimentAnalysisRequestConfig": {
-                    "analyzeQueryTextSentiment": True
-                }
-            }
-        }
-
-        connection = HTTPSConnection(request_endpoint)
-        connection.request('POST', request_path, headers=request_headers, body=json.dumps(request_body))
-        response = connection.getresponse()
-        
-        if response.status == 200:
-            response_data = response.read()
-            response_json = json.loads(response_data)
-            
-            await message.channel.send(response_json["queryResult"]["fulfillmentText"])
-
-        else:
+        except Exception as error:
+            logging.error(error)
             await message.channel.send("oh dear, something fucked up :-(")
             await message.channel.send("I blame @desidero for making me too complicated")
 
