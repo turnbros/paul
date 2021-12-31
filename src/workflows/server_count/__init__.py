@@ -18,14 +18,16 @@ NAMESPACE = "default"
 
 
 # Workflow Interface
-class WorkflowStub:
-    @workflow_method(task_queue=TASK_QUEUE)
-    async def execute(self, payload: dict):
-        raise NotImplementedError
+#class WorkflowStub:
+#    @workflow_method(task_queue=TASK_QUEUE)
+#    async def execute(self, payload: dict):
+#        raise NotImplementedError
 
 
 # Workflow Implementation
-class Workflow(WorkflowStub):
+#class Workflow(WorkflowStub):
+class Workflow:
+    @workflow_method(task_queue=TASK_QUEUE)
     async def execute(self, payload: dict):
         gs_count = kube.count_game_servers()
         return f"Howdy, {payload.get('name')}, the answer is {len(gs_count)}!"

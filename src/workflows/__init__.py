@@ -74,19 +74,20 @@ class WorkflowCatalog(object):
             new_client = WorkflowClient.new_client(host=self.temporal_host,
                                                 port=self.temporal_port,
                                                 namespace=self.namespace)
-#            workflow = importlib.import_module(f"workflows.{name}")
-#            print(type(workflow))
-#            print(dir(workflow))
-#            #registered_workflow: workflow.get_stub() = new_client.new_workflow_stub(workflow.get_stub())
-#            registered_workflow: workflow.WorkflowStub = new_client.new_workflow_stub(workflow.WorkflowStub)
-#            result = await registered_workflow.execute(kwargs)
+            workflow = importlib.import_module(f"workflows.{name}")
+            print(type(workflow))
+            print(dir(workflow))
+            #registered_workflow: workflow.get_stub() = new_client.new_workflow_stub(workflow.get_stub())
+            #registered_workflow: workflow.WorkflowStub = new_client.new_workflow_stub(workflow.WorkflowStub)
+            registered_workflow: workflow.Workflow = new_client.new_workflow_stub(workflow.Workflow)
+            result = await registered_workflow.execute(kwargs)
+            print(result)
 
 
-
-            from . import server_count
-            greeting_workflow: server_count.WorkflowStub = new_client.new_workflow_stub(server_count.WorkflowStub)
-            result = await greeting_workflow.execute(kwargs)
-            print("Workflow returned:", result)
+#            from . import server_count
+#            greeting_workflow: server_count.WorkflowStub = new_client.new_workflow_stub(server_count.WorkflowStub)
+#            result = await greeting_workflow.execute(kwargs)
+#            print("Workflow returned:", result)
 
         except Exception as error:
             traceback.print_exc()
