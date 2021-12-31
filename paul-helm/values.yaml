@@ -3,7 +3,8 @@ config:
     host: temporal-frontend.temporal.svc.cluster.local
     port: 7233
     namespace: default
-
+  enabled_workflows:
+    - server_count
   intent_workflow_routes:
     projects/paul-fmma/agent/intents/a4f46c93-b72e-4b26-bced-e492e53d45d6: server_count
 
