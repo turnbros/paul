@@ -19,7 +19,7 @@ class Workflow:
     @workflow_method(task_queue=TASK_QUEUE)
     async def execute(self, payload: dict):
         gs_count = kube.count_game_servers()
-        return f"Howdy, {payload.get('name')}, the answer is {len(gs_count)}!"
+        return f"Howdy, {payload.get('name', 'fuckface')}, the answer is {len(gs_count)}!"
 
 
 def get_temporal_ep():
