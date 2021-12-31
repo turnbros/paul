@@ -3,6 +3,7 @@ import sys
 import json
 import logging
 import workflows
+import traceback
 from waitress import serve
 from flask import Flask, request, jsonify
 
@@ -38,9 +39,9 @@ async def fulfillment():
         intent_name = request_json["queryResult"]["intent"]["displayName"]
         intent_parameters = request_json["queryResult"]["parameters"]
         logging.info(f"Execute worker: {intent_name}")
-        response_text = await workflows.WorkflowCatalog.execute_workflow(intent_name, **intent_parameters)
-        #response_text = await intent_routes.execute_intent_workflow(intent_name, name="fuckface")
+        response_text = await workflow_catalog.execute_workflow(intent_name, **intent_parameters)
     except Exception as error:
+        traceback.print_exc()
         logging.error(error)
         response_text = "on no, I shit the bed :-("
 

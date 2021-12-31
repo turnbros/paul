@@ -1,5 +1,6 @@
 import os
 import logging
+import traceback
 import importlib
 import importlib.util
 from typing import Any
@@ -58,6 +59,7 @@ class WorkflowCatalog(object):
             logging.info(f"Registration complete: {name}")
             return True
         except Exception as error:
+            traceback.print_exc()
             logging.error(f"Registration of {name} failed with error {error}")
         return False
 
@@ -72,6 +74,7 @@ class WorkflowCatalog(object):
             registered_workflow: workflow.stub() = self.client.new_workflow_stub(workflow.get_stub())
             result = await registered_workflow.execute(kwargs)
         except Exception as error:
+            traceback.print_exc()
             logging.error(f"Execution of {name} failed with error {error}")
             result = None
         return result
