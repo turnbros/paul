@@ -2,7 +2,7 @@ import os
 import sys
 import discord
 import logging
-from src.dialogflow import PaulDialog
+from dialogflow import PaulDialog
 
 paul_dialog = PaulDialog(
       key_path = os.getenv('DIALOGFLOW_CRED_PATH'),
