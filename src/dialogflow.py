@@ -30,4 +30,11 @@ if __name__ == "__main__":
       language_code = "en"
     )
   session_id = paul_dialog.create_session()
-  paul_dialog.handle_input(session_id, "hello!")
+  asdf = paul_dialog.handle_input(session_id, "hello!")
+  #print(dir(asdf))
+  #print(type(asdf))
+  #print(vars(asdf))
+  #print(asdf.query_result.fulfillment_text)
+
+  qwer = asdf.query_result.fulfillment_text
+  print(type(qwer))

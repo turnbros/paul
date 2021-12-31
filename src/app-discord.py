@@ -36,7 +36,7 @@ async def on_message(message):
             paul_dialog.handle_input(session_id, "hello!")
             print(response)
 
-            await message.channel.send(response["queryResult"]["fulfillmentText"])
+            await message.channel.send(response.query_result.fulfillment_text)
 
         except Exception as error:
             traceback.print_exc()
