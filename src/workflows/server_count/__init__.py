@@ -14,7 +14,7 @@ TASK_QUEUE = "ServerCount"
 NAMESPACE = "default"
 
 
-def count_running_servers(filters: dict):
+def count_running_servers(filters: dict = None):
     return len(kube.count_game_servers())
 
 
