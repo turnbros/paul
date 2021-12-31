@@ -63,7 +63,7 @@ class WorkflowCatalog(object):
         return False
 
 
-    async def execute_workflow(self, name, **kwargs):
+    async def execute_workflow(self, name, payload: dict):
         logging.info(f"Executing workflow: {name}")
 
         workflow = self.get_workflow(name)
@@ -76,7 +76,7 @@ class WorkflowCatalog(object):
                                                 namespace=self.namespace)
             workflow = importlib.import_module(f"workflows.{name}")
             registered_workflow: workflow.Workflow = client.new_workflow_stub(workflow.Workflow)
-            result = await registered_workflow.execute(kwargs)
+            result = await registered_workflow.execute(payload)
 
         except Exception as error:
             traceback.print_exc()

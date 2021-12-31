@@ -1,11 +1,10 @@
+import os
+import sys
 import asyncio
 import logging
+from util import kubernetes
 from temporal.workerfactory import WorkerFactory
 from temporal.workflow import workflow_method, Workflow, WorkflowClient
-import sys
-sys.path.append("/Users/dylanturnbull/Documents/projects/paul/src")
-from util import kubernetes
-import os
 
 logging.basicConfig(level=logging.INFO)
 
@@ -15,11 +14,29 @@ TASK_QUEUE = "ServerCount"
 NAMESPACE = "default"
 
 
+def count_running_servers(filters: dict):
+    return len(kube.count_game_servers())
+
+
+
 class Workflow:
     @workflow_method(task_queue=TASK_QUEUE)
     async def execute(self, payload: dict):
-        gs_count = kube.count_game_servers()
-        return f"Howdy, {payload.get('name', 'fuckface')}, the answer is {len(gs_count)}!"
+        
+        game_type = payload.get("gametype", False)
+        server_count = count_running_servers()
+
+        if game_type:
+            if server_count > 0:
+                return f"I found {server_count} running {game_type} servers"
+            return f"Unfortunately I couldn't find any {game_type} servers..."
+
+        if server_count > 0:
+            return f"Sure thing! There are {server_count} running servers in total"
+        return "Something may have gone wrong because I didn't find any servers..."
+
+
+
 
 
 def get_temporal_ep():
@@ -28,6 +45,9 @@ def get_temporal_ep():
         return "temporal-frontend.temporal.svc.cluster.local", 7233
     else:
         return "localhost", 7233
+
+
+
 
 
 async def worker_main():

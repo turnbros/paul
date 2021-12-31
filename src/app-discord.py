@@ -48,11 +48,23 @@ async def on_message(message):
             paul_dialog.handle_input(session_id, "hello!")
             print(response)
 
-            response_intent = response.query_result.intent.display_name
+            intent_name = response.query_result.intent.display_name
 
-            if response_intent in enabled_workflows:
-                response_message = await workflow_catalog.execute_workflow(response_intent)
+            parameters = {}
+            intent_parameters = response.query_result.parameters
+            print(intent_parameters._pb)
+
+            for parameter in intent_parameters.items():
+                print(parameter)
+                print(type(parameter))
+                parameters[parameter[0]] = parameter[1]
+
+            
+
+            if intent_name in enabled_workflows:
+                response_message = await workflow_catalog.execute_workflow(intent_name, parameters)
             else:
+                
                 response_message = response.query_result.fulfillment_text
 
             await message.channel.send(response_message)
