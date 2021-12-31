@@ -1,4 +1,3 @@
-import os
 import sys
 import time
 import asyncio
@@ -8,14 +7,6 @@ import threading
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
-if os.getenv("KUBERNETES_SERVICE_HOST", False):
-    web_api_scheme = "http"
-    web_api_host = "paul.paul.svc.cluster.local"
-    web_api_port = 8443
-else:
-    web_api_scheme = "http"
-    web_api_host = "localhost"
-    web_api_port = 8443
 
 def start_worker(name):
     logging.info(f"Starting worker {name}")

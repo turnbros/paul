@@ -40,16 +40,15 @@ class WorkflowCatalog(object):
             self.temporal_host = "localhost"
             self.temporal_port = 7233
 
-        self.client = WorkflowClient.new_client(host=self.temporal_host,
-                                                port=self.temporal_port,
-                                                namespace=self.namespace)
 
     @property
     def workflows(self):
         return self._workflows
 
+
     def get_workflow(self, name: str) -> Workflow:
         return self._workflows[name]
+
 
     # TODO: See if there's maybe a way to include the workflow parameter schema
     def register_workflow(self, name: str):
@@ -63,6 +62,7 @@ class WorkflowCatalog(object):
             logging.error(f"Registration of {name} failed with error {error}")
         return False
 
+
     async def execute_workflow(self, name, **kwargs):
         logging.info(f"Executing workflow: {name}")
 
@@ -71,23 +71,12 @@ class WorkflowCatalog(object):
             raise Exception(f"Workflow {name} not found!")
 
         try:
-            new_client = WorkflowClient.new_client(host=self.temporal_host,
+            client = WorkflowClient.new_client(host=self.temporal_host,
                                                 port=self.temporal_port,
                                                 namespace=self.namespace)
             workflow = importlib.import_module(f"workflows.{name}")
-            print(type(workflow))
-            print(dir(workflow))
-            #registered_workflow: workflow.get_stub() = new_client.new_workflow_stub(workflow.get_stub())
-            #registered_workflow: workflow.WorkflowStub = new_client.new_workflow_stub(workflow.WorkflowStub)
-            registered_workflow: workflow.Workflow = new_client.new_workflow_stub(workflow.Workflow)
+            registered_workflow: workflow.Workflow = client.new_workflow_stub(workflow.Workflow)
             result = await registered_workflow.execute(kwargs)
-            print(result)
-
-
-#            from . import server_count
-#            greeting_workflow: server_count.WorkflowStub = new_client.new_workflow_stub(server_count.WorkflowStub)
-#            result = await greeting_workflow.execute(kwargs)
-#            print("Workflow returned:", result)
 
         except Exception as error:
             traceback.print_exc()

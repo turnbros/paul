@@ -1,9 +1,7 @@
 import asyncio
-from importlib import util
 import logging
 from temporal.workerfactory import WorkerFactory
 from temporal.workflow import workflow_method, Workflow, WorkflowClient
-from threading import Thread
 import sys
 sys.path.append("/Users/dylanturnbull/Documents/projects/paul/src")
 from util import kubernetes
@@ -17,15 +15,6 @@ TASK_QUEUE = "ServerCount"
 NAMESPACE = "default"
 
 
-# Workflow Interface
-#class WorkflowStub:
-#    @workflow_method(task_queue=TASK_QUEUE)
-#    async def execute(self, payload: dict):
-#        raise NotImplementedError
-
-
-# Workflow Implementation
-#class Workflow(WorkflowStub):
 class Workflow:
     @workflow_method(task_queue=TASK_QUEUE)
     async def execute(self, payload: dict):
@@ -39,6 +28,7 @@ def get_temporal_ep():
         return "temporal-frontend.temporal.svc.cluster.local", 7233
     else:
         return "localhost", 7233
+
 
 async def worker_main():
     temporal_endpoint = get_temporal_ep()

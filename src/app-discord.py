@@ -28,6 +28,7 @@ enabled_workflows = [
 async def on_ready():
     logging.info(f'I have logged in as {client.user}')
 
+
 @client.event
 async def on_message(message):
     if message.author == client.user:
@@ -48,10 +49,11 @@ async def on_message(message):
             print(response)
 
             response_intent = response.query_result.intent.display_name
-            response_message = response.query_result.fulfillment_text
 
             if response_intent in enabled_workflows:
                 response_message = await workflow_catalog.execute_workflow(response_intent)
+            else:
+                response_message = response.query_result.fulfillment_text
 
             await message.channel.send(response_message)
 

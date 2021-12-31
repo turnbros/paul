@@ -19,3 +19,17 @@ if __name__ == "__main__":
     for workflow in workflows:
         workflow_catalog.register_workflow(workflow)
     asyncio.run(workflow_catalog.execute_workflow("server_count"))
+
+
+# if __name__ == "__main__":
+#   paul_dialog = PaulDialog(
+#       project_id = 'paul-fmma',
+#       language_code = "en"
+#     )
+#   session_id = paul_dialog.create_session()
+#   asdf = paul_dialog.handle_input(session_id, "hello!")
+# 
+#   qwer = asdf.query_result.fulfillment_text
+# 
+# 
+#   print(type(qwer))

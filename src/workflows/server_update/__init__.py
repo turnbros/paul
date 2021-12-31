@@ -1,6 +1,5 @@
 import asyncio
 import logging
-from datetime import timedelta
 import os
 from temporal.workerfactory import WorkerFactory
 from temporal.workflow import workflow_method, Workflow, WorkflowClient
@@ -13,17 +12,12 @@ TASK_QUEUE = "ServerUpdate"
 NAMESPACE = "default"
 
 
-# Workflow Interface
-class WorkflowStub:
+# Workflow Implementation
+class Workflow:
     @workflow_method(task_queue=TASK_QUEUE)
     async def execute(self, payload):
-        raise NotImplementedError
-
-
-# Workflow Implementation
-class Workflow(WorkflowStub):
-    async def execute(self, payload):
         return f"Howdy, {payload.get('name')}, I'm gonna update some shit!"
+
 
 def get_temporal_ep():
     kubernetes_host = os.getenv("KUBERNETES_SERVICE_HOST", False)
@@ -31,6 +25,7 @@ def get_temporal_ep():
         return "temporal-frontend.temporal.svc.cluster.local", 7233
     else:
         return "localhost", 7233
+
 
 async def worker_main():
     temporal_endpoint = get_temporal_ep()
