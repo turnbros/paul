@@ -36,5 +36,10 @@ if __name__ == "__main__":
   #print(vars(asdf))
   #print(asdf.query_result.fulfillment_text)
 
+  qwer = asdf.query_result.
+
+
   qwer = asdf.query_result.fulfillment_text
+
+
   print(type(qwer))
