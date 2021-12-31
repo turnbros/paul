@@ -58,8 +58,8 @@ if __name__ == "__main__":
     routes = config["intent_workflow_routes"]
     logging.info("Registering workers...")
     for worker in routes.values():
-        if register_worker(worker):
-            start_worker(worker)
+        #if register_worker(worker):
+        start_worker(worker)
     logging.info("Worker registration complete")
 
     while(True):

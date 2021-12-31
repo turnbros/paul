@@ -71,12 +71,30 @@ class WorkflowCatalog(object):
             raise Exception(f"Workflow {name} not found!")
 
         try:
-            registered_workflow: workflow.stub() = self.client.new_workflow_stub(workflow.get_stub())
-            result = await registered_workflow.execute(kwargs)
+            new_client = WorkflowClient.new_client(host=self.temporal_host,
+                                                port=self.temporal_port,
+                                                namespace=self.namespace)
+#            workflow = importlib.import_module(f"workflows.{name}")
+#            print(type(workflow))
+#            print(dir(workflow))
+#            #registered_workflow: workflow.get_stub() = new_client.new_workflow_stub(workflow.get_stub())
+#            registered_workflow: workflow.WorkflowStub = new_client.new_workflow_stub(workflow.WorkflowStub)
+#            result = await registered_workflow.execute(kwargs)
+
+
+
+            from . import server_count
+            greeting_workflow: server_count.WorkflowStub = new_client.new_workflow_stub(server_count.WorkflowStub)
+            result = await greeting_workflow.execute(kwargs)
+            print("Workflow returned:", result)
+
         except Exception as error:
             traceback.print_exc()
             logging.error(f"Execution of {name} failed with error {error}")
             result = None
+
+
+
         return result
 
 

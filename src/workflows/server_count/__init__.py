@@ -30,6 +30,7 @@ class Workflow(WorkflowStub):
         gs_count = kube.count_game_servers()
         return f"Howdy, {payload.get('name')}, the answer is {len(gs_count)}!"
 
+
 def get_temporal_ep():
     kubernetes_host = os.getenv("KUBERNETES_SERVICE_HOST", False)
     if kubernetes_host:
@@ -46,14 +47,11 @@ async def worker_main():
     factory.start()
     print("Worker started")
 
-
 async def start_worker():
     asyncio.ensure_future(worker_main())
-
 
 if __name__ == '__main__':
     loop = asyncio.new_event_loop()
     asyncio.ensure_future(worker_main())
     loop.run_forever()
-    
     print("done")
