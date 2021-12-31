@@ -6,7 +6,6 @@ import traceback
 from dialogflow import PaulDialog
 
 paul_dialog = PaulDialog(
-      key_path = os.getenv('DIALOGFLOW_CRED_PATH'),
       project_id = os.getenv('DIALOGFLOW_PROJECT_ID'),
       language_code = os.getenv("DIALOGFLOW_LANG_CODE")
     )
@@ -29,12 +28,14 @@ async def on_message(message):
     if message.content.startswith(f"<@!{app_info.id}>"):
         try:
             request_message = message.content.lower().replace(f"<@!{app_info.id}>", '')
+
             session_id = paul_dialog.create_session()
             response = paul_dialog.handle_input(session_id, request_message)
 
             session_id = paul_dialog.create_session()
             paul_dialog.handle_input(session_id, "hello!")
             print(response)
+
             await message.channel.send(response["queryResult"]["fulfillmentText"])
 
         except Exception as error:

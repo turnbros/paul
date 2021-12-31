@@ -1,19 +1,18 @@
 import os
-import shortuuid
+import uuid
 from google.cloud import dialogflow_v2
 
 
 class PaulDialog(object):
-  def __init__(self, key_path, project_id, language_code):
+  def __init__(self, project_id, language_code):
     self._sessions = {}
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
     self.project_id = project_id
     self.language_code = language_code
     self.session_client = dialogflow_v2.SessionsClient()
 
   def create_session(self, session_id=None):
     if session_id is None:
-      session_id = shortuuid.uuid()
+      session_id = uuid.uuid1()
     self._sessions[session_id] = self.session_client.session_path(self.project_id, session_id)
     return session_id
 
@@ -27,8 +26,7 @@ class PaulDialog(object):
 
 if __name__ == "__main__":
   paul_dialog = PaulDialog(
-      key_path = '/Users/dylanturnbull/Downloads/paul-fmma-609a8d1a500b.json',
-      project_id = 'paul-fmmkubea',
+      project_id = 'paul-fmma',
       language_code = "en"
     )
   session_id = paul_dialog.create_session()
