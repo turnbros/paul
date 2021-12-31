@@ -2,6 +2,7 @@ import os
 import sys
 import discord
 import logging
+import traceback
 from dialogflow import PaulDialog
 
 paul_dialog = PaulDialog(
@@ -30,9 +31,14 @@ async def on_message(message):
             request_message = message.content.lower().replace(f"<@!{app_info.id}>", '')
             session_id = paul_dialog.create_session()
             response = paul_dialog.handle_input(session_id, request_message)
+
+            session_id = paul_dialog.create_session()
+            paul_dialog.handle_input(session_id, "hello!")
+            print(response)
             await message.channel.send(response["queryResult"]["fulfillmentText"])
 
         except Exception as error:
+            traceback.print_exc()
             logging.error(error)
             await message.channel.send("oh dear, something fucked up :-(")
             await message.channel.send("I blame @desidero for making me too complicated")
