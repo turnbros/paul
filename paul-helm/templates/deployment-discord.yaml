@@ -36,7 +36,7 @@ spec:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - name: dialogflow-credentials
-              mountPath: "/paul"
+              mountPath: "/paul/secrets"
               readOnly: true
       volumes:
         - name: dialogflow-credentials

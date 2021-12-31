@@ -12,6 +12,7 @@ WORKDIR /paul
 COPY --chown=paul  requirements.txt /paul/requirements.txt
 
 # Install Pauls' requirements
+RUN apk add --no-cache libstdc++
 RUN pip install -r requirements.txt
 
 # Copy in what makes Paul, Paul

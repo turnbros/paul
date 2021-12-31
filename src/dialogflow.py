@@ -28,7 +28,7 @@ class PaulDialog(object):
 if __name__ == "__main__":
   paul_dialog = PaulDialog(
       key_path = '/Users/dylanturnbull/Downloads/paul-fmma-609a8d1a500b.json',
-      project_id = 'paul-fmma',
+      project_id = 'paul-fmmkubea',
       language_code = "en"
     )
   session_id = paul_dialog.create_session()
