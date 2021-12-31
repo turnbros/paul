@@ -17,7 +17,5 @@ if __name__ == "__main__":
         "server_count"
     ]
     for workflow in workflows:
-        register_workflow(workflow)
-
-
+        workflow_catalog.register_workflow(workflow)
     asyncio.run(workflow_catalog.execute_workflow("server_count"))

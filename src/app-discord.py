@@ -2,16 +2,27 @@ import os
 import sys
 import discord
 import logging
+import workflows
 import traceback
 from dialogflow import PaulDialog
 
-paul_dialog = PaulDialog(
-      project_id = os.getenv('DIALOGFLOW_PROJECT_ID'),
-      language_code = os.getenv("DIALOGFLOW_LANG_CODE")
-    )
+
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+
 
 client = discord.Client()
-logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+paul_dialog = PaulDialog(
+    project_id = os.getenv('DIALOGFLOW_PROJECT_ID'),
+    language_code = os.getenv("DIALOGFLOW_LANG_CODE")
+)
+
+
+# TODO: Make this dynamic (maybe via helm?)
+workflow_catalog = workflows.WorkflowCatalog()
+enabled_workflows = [
+    "server_count"
+]
+
 
 @client.event
 async def on_ready():
@@ -36,7 +47,13 @@ async def on_message(message):
             paul_dialog.handle_input(session_id, "hello!")
             print(response)
 
-            await message.channel.send(response.query_result.fulfillment_text)
+            response_intent = response.query_result.intent.display_name
+            response_message = response.query_result.fulfillment_text
+
+            if response_intent in enabled_workflows:
+                response_message = await workflow_catalog.execute_workflow(response_intent)
+
+            await message.channel.send(response_message)
 
         except Exception as error:
             traceback.print_exc()
@@ -46,6 +63,8 @@ async def on_message(message):
 
 
 if __name__ == "__main__":
+    for workflow in enabled_workflows:
+        workflow_catalog.register_workflow(workflow)
     discord_token = os.getenv("DISCORD_TOKEN", False)
     if discord_token:
         client.run(discord_token)

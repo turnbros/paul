@@ -93,28 +93,4 @@ class WorkflowCatalog(object):
             logging.error(f"Execution of {name} failed with error {error}")
             result = None
 
-
-
         return result
-
-
-
-
-
-
-# registered_workflows = {}
-#def register_workflow(workflow_name):
-#    print(f"register workflow: {workflow_name}...")
-#    try:
-#        registered_workflows[workflow_name] = importlib.import_module(f"workflows.{workflow_name}")
-#        print(f"registration complete: {workflow_name}")
-#    except:
-#        print(f"registration failed: {workflow_name}")
-#
-# async def execute_workflow(workflow_name, **kwargs):
-#    print(f"execute_workflow: {workflow_name}")
-#    temporal_endpoint = get_temporal_ep()
-#    client = WorkflowClient.new_client(host=temporal_endpoint[0], port=temporal_endpoint[1], namespace=NAMESPACE)
-#    registered_workflow: registered_workflows[workflow_name].WorkflowStub = client.new_workflow_stub(registered_workflows[workflow_name].WorkflowStub)
-#    result = await registered_workflow.execute(kwargs)
-#    return result
