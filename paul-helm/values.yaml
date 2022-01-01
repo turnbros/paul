@@ -11,8 +11,10 @@ temporal:
 dialogflow:
   project_id: paul-fmma
   language_code: en
+
+discord: {}
   
-  
+
 resources:
   requests:
     cpu: 100m

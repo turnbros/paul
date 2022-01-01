@@ -8,6 +8,9 @@ data:
   
   dialogflow: |
     {{ toJson .Values.dialogflow }}
+  
+  discord: |
+    {{ toJson .Values.discord }}
 
   workflows: |
     {{ toJson .Values.workflows }}

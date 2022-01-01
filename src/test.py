@@ -15,7 +15,11 @@ logging.basicConfig(level=logging.INFO)
 from util import config
 if __name__ == "__main__":
     configs = config.Configuration()
+    print(configs.read_temporal_config())
+    print(configs.read_dialogflow_config())
+    print(configs.read_discord_config())
     print(configs.read_workflow_config("server_count"))
+
 
 # if __name__ == "__main__":
 #     workflows = [
