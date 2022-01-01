@@ -3,7 +3,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "paul.fullname" $ }}-workflow-{{ $workflow.name }}-worker
+  name: {{ include "paul.fullname" $ }}-workflow-{{ regexReplaceAll "_" $workflow.name "-" }}-worker
   labels:
     paul.turnbros.app/role: worker
     paul.turnbros.app/component: workflow
