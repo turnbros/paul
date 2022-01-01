@@ -1,6 +1,7 @@
-import asyncio
-import logging
 import os
+import logging
+from util import kubernetes
+from util import config
 from temporal.workerfactory import WorkerFactory
 from temporal.workflow import workflow_method, Workflow, WorkflowClient
 
@@ -8,42 +9,41 @@ from temporal.workflow import workflow_method, Workflow, WorkflowClient
 logging.basicConfig(level=logging.INFO)
 
 
-TASK_QUEUE = "ServerUpdate"
-NAMESPACE = "default"
+kube = kubernetes.Cluster()
+paul_config = config.Configuration()
+worker_config = paul_config.read_workflow_config("server_update")
+temporal_config = paul_config.read_temporal_config()
+
+
+TASK_QUEUE = worker_config.get("task_queue")
+if TASK_QUEUE is None:
+    raise Exception("Missing worker task_queue configuration!")
+
+
+NAMESPACE = temporal_config.get("namespace")
+if NAMESPACE is None:
+    raise Exception("Missing temporal namespace configuration!")
 
 
 # Workflow Implementation
 class Workflow:
     @workflow_method(task_queue=TASK_QUEUE)
-    async def execute(self, payload):
+    async def execute(self, payload: dict):
         return f"Howdy, {payload.get('name')}, I'm gonna update some shit!"
 
 
-def get_temporal_ep():
-    kubernetes_host = os.getenv("KUBERNETES_SERVICE_HOST", False)
-    if kubernetes_host:
-        return "temporal-frontend.temporal.svc.cluster.local", 7233
-    else:
-        return "localhost", 7233
-
-
 async def worker_main():
-    temporal_endpoint = get_temporal_ep()
-    client = WorkflowClient.new_client(host=temporal_endpoint[0], port=temporal_endpoint[1], namespace=NAMESPACE)
+    # Simple check to see if we're outside k8s
+    if os.getenv("KUBERNETES_SERVICE_HOST", False):
+        temporal_host = temporal_config.get("host")
+    else:
+        temporal_host = "localhost"    
+
+    temporal_port = temporal_config.get("port")
+
+    client = WorkflowClient.new_client(host=temporal_host, port=temporal_port, namespace=NAMESPACE)
     factory = WorkerFactory(client, NAMESPACE)
     worker = factory.new_worker(TASK_QUEUE)
     worker.register_workflow_implementation_type(Workflow)
     factory.start()
-    print("Worker started")
-
-
-async def start_worker():
-    asyncio.ensure_future(worker_main())
-
-    
-if __name__ == '__main__':
-    loop = asyncio.new_event_loop()
-    asyncio.ensure_future(worker_main())
-    loop.run_forever()
-    
-    print("done")
+    logging.info("Worker started")

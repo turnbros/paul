@@ -7,6 +7,7 @@ import traceback
 from dialogflow import PaulDialog
 from util import config
 
+
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
 
@@ -18,7 +19,6 @@ paul_dialog = PaulDialog(
 )
 
 
-# TODO: Make this dynamic (maybe via helm?)
 workflow_catalog = workflows.WorkflowCatalog()
 enabled_workflows = []
 for workflow_config in paul_config.read_workflow_config():
@@ -41,13 +41,11 @@ async def on_message(message):
     if message.content.startswith(f"<@!{app_info.id}>"):
         try:
             request_message = message.content.lower().replace(f"<@!{app_info.id}>", '')
-
             session_id = paul_dialog.create_session()
             response = paul_dialog.handle_input(session_id, request_message)
-
             intent_name = response.query_result.intent.display_name
             intent_parameters = response.query_result.parameters
-            
+
             parameters = {}
             for parameter in intent_parameters.items():
                 parameters[parameter[0]] = parameter[1]
@@ -56,7 +54,7 @@ async def on_message(message):
                 response_message = await workflow_catalog.execute_workflow(intent_name, parameters)
             else:
                 response_message = response.query_result.fulfillment_text
-
+            
             await message.channel.send(response_message)
 
         except Exception as error:

@@ -1,6 +1,11 @@
-import os
+import sys
 import uuid
+import logging
 from google.cloud import dialogflow_v2
+
+
+logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+
 
 class PaulDialog(object):
   def __init__(self, project_id, language_code):
@@ -19,5 +24,5 @@ class PaulDialog(object):
     text_input = dialogflow_v2.TextInput(text=input_text, language_code=self.language_code)
     query_input = dialogflow_v2.QueryInput(text=text_input)
     response_dialogflow = self.session_client.detect_intent(session=self._sessions[session_id], query_input=query_input)
-    print(response_dialogflow)
+    logging.debug(response_dialogflow)
     return response_dialogflow
