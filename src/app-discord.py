@@ -5,23 +5,24 @@ import logging
 import workflows
 import traceback
 from dialogflow import PaulDialog
-
+from util import config
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
 
 client = discord.Client()
+paul_config = config.Configuration()
 paul_dialog = PaulDialog(
-    project_id = os.getenv('DIALOGFLOW_PROJECT_ID'),
-    language_code = os.getenv("DIALOGFLOW_LANG_CODE")
+    project_id = paul_config.read_dialogflow_config().get('project_id'),
+    language_code = paul_config.read_dialogflow_config().get('language_code')
 )
 
 
 # TODO: Make this dynamic (maybe via helm?)
 workflow_catalog = workflows.WorkflowCatalog()
-enabled_workflows = [
-    "server_count"
-]
+enabled_workflows = []
+for workflow_config in paul_config.read_workflow_config():
+    enabled_workflows.append(workflow_config.get("name"))
 
 
 @client.event
@@ -44,19 +45,16 @@ async def on_message(message):
             session_id = paul_dialog.create_session()
             response = paul_dialog.handle_input(session_id, request_message)
 
-            session_id = paul_dialog.create_session()
-            paul_dialog.handle_input(session_id, "hello!")
-
             intent_name = response.query_result.intent.display_name
-            parameters = {}
             intent_parameters = response.query_result.parameters
+            
+            parameters = {}
             for parameter in intent_parameters.items():
                 parameters[parameter[0]] = parameter[1]
 
             if intent_name in enabled_workflows:
                 response_message = await workflow_catalog.execute_workflow(intent_name, parameters)
             else:
-                
                 response_message = response.query_result.fulfillment_text
 
             await message.channel.send(response_message)

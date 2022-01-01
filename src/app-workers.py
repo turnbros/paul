@@ -5,6 +5,7 @@ import logging
 import importlib
 import threading
 
+
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
 
 
@@ -17,25 +18,21 @@ def start_worker(name):
     logging.info(f"Worker {name} started!")
 
 
-
-
 if __name__ == "__main__":
-
-
     if len(sys.argv) > 1:
         start_worker(sys.argv[1])
         while(True):
             time.sleep(5)
 
 
-    logging.info("Starting workers...")
-    # TODO: make this dynamic
-    workflows = [
-        "server_count"
-    ]
-    for worker in workflows:
-        start_worker(worker)
-    logging.info("Workers started!")
-
-    while(True):
-        time.sleep(5)
+#    logging.info("Starting workers...")
+#    # TODO: make this dynamic
+#    workflows = [
+#        "server_count"
+#    ]
+#    for worker in workflows:
+#        start_worker(worker)
+#    logging.info("Workers started!")
+#
+#    while(True):
+#        time.sleep(5)

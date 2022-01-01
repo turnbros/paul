@@ -18,6 +18,7 @@ if __name__ == "__main__":
     print(configs.read_temporal_config())
     print(configs.read_dialogflow_config())
     print(configs.read_discord_config())
+    print(configs.read_workflow_config())
     print(configs.read_workflow_config("server_count"))
 
 

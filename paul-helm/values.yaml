@@ -2,6 +2,7 @@
 workflows:
 - name: server_count
   replicas: 1
+  task_queue: ServerCount
 
 temporal:
   host: temporal-frontend.temporal.svc.cluster.local
