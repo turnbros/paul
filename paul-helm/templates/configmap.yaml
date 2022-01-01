@@ -3,5 +3,11 @@ kind: ConfigMap
 metadata:
   name: "paul-cm"
 data:
-  config: |
-    {{ toJson .Values.config }}
+  temporal: |
+    {{ toJson .Values.temporal }}
+  
+  dialogflow: |
+    {{ toJson .Values.dialogflow }}
+
+  workflows: |
+    {{ toJson .Values.workflow }}

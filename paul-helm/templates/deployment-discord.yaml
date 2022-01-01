@@ -3,9 +3,13 @@ kind: Deployment
 metadata:
   name: {{ include "paul.fullname" . }}-discord
   labels:
+    paul.turnbros.app/role: language
+    paul.turnbros.app/component: discord
+    paul.turnbros.app/environment: prod-ish
     {{- include "paul.labels" . | nindent 4 }}
+
 spec:
-  replicas: {{ .Values.replicas.discord }}
+  replicas: 1
   selector:
     matchLabels:
       {{- include "paul.selectorLabels" . | nindent 6 }}
@@ -29,6 +33,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["/usr/local/bin/python"]
           args: ["app-discord.py"]
+          env:
+            - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /paul/secrets/dialogflow_creds.json
           envFrom:
             - secretRef:
                 name: discord-token

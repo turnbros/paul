@@ -1,13 +1,9 @@
 import os
-import json
+import time
+import asyncio
 from kubernetes import client, config
-import kubernetes
 from kubernetes.client.api.core_v1_api import CoreV1Api
-
-# configmap_name = os.getenv("CONFIGMAP_NAME")
-# k8s_endpoint = os.getenv("K8S_ENDPOINT")
-# sa_mount_path = os.getenv("SA_MOUNT_PATH")
-# configmap_name = os.getenv("CONFIGMAP_NAME")
+from kubernetes.client import V1ConfigMap, V1ObjectMeta
 
 class Cluster:
 	def __init__(self):
@@ -33,25 +29,30 @@ class Cluster:
 			# This is NOT running inside K8s
 			config.load_kube_config()
 			self._kube_api = client.CoreV1Api()
-
-		self.config = self.refresh_config
 	
 	@property
 	def api(self) -> CoreV1Api:
 		return self._kube_api
 
-	def refresh_config(self) -> dict:
-		configmap = self.api.list_pod_for_all_namespaces()
-		return configmap.data
-	
-	def client(self):
-		pass
+	def read_config(self) -> V1ConfigMap:
+		configmap: V1ConfigMap = self.api.read_namespaced_config_map(self.configmap_name, self.namespace)
+		return configmap
 
-	def read_configmap(self):
-		configmap = self.api.read_namespaced_config_map(self.configmap_name, self.namespace)
-		config_json = json.loads(configmap.data["config"])
-		return config_json
+	def watch_config(self, callback, interval: int = 3) -> V1ConfigMap:
+		
+		def get_configmap_version():
+			configmap: V1ConfigMap = self.read_config
+			configmap_metadata: V1ObjectMeta = configmap.metadata
+			return configmap_metadata.resource_version
 
-	def count_game_servers(self):
-		pod_list = self.api.list_pod_for_all_namespaces()
-		return pod_list.items
+		async def version_check(callback, interval, initial_version):
+			while(True):
+				time.sleep(interval)
+				if initial_version != get_configmap_version():
+					callback(self.read_config())
+
+		configmap: V1ConfigMap = self.read_config()
+		configmap_version = get_configmap_version()
+		asyncio.run(version_check(callback, interval, configmap_version))
+
+		return configmap
