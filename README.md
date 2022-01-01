@@ -24,6 +24,16 @@ export DISCORD_TOKEN=""
 ## This is how we interact with Paul
 ![alt text](docs/paul.drawio.svg)
 
+#### Label for game server
+`gaming.turnbros.app/role=server`
+
+#### Label for type of game server
+`gaming.turnbros.app/type=satisfactory`
+`gaming.turnbros.app/type=minecraft`
+`gaming.turnbros.app/type=rust`
+`gaming.turnbros.app/type=avorion`
+
+
 ### Development with Telepresence
 Make sure Telepresence is installed
 ```

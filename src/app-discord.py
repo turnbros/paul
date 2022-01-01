@@ -46,20 +46,12 @@ async def on_message(message):
 
             session_id = paul_dialog.create_session()
             paul_dialog.handle_input(session_id, "hello!")
-            print(response)
 
             intent_name = response.query_result.intent.display_name
-
             parameters = {}
             intent_parameters = response.query_result.parameters
-            print(intent_parameters._pb)
-
             for parameter in intent_parameters.items():
-                print(parameter)
-                print(type(parameter))
                 parameters[parameter[0]] = parameter[1]
-
-            
 
             if intent_name in enabled_workflows:
                 response_message = await workflow_catalog.execute_workflow(intent_name, parameters)
@@ -73,7 +65,7 @@ async def on_message(message):
             traceback.print_exc()
             logging.error(error)
             await message.channel.send("oh dear, something fucked up :-(")
-            await message.channel.send("I blame @desidero for making me too complicated")
+            await message.channel.send("kill meeeeeee")
 
 
 if __name__ == "__main__":

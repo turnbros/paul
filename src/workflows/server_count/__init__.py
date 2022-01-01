@@ -14,19 +14,23 @@ TASK_QUEUE = "ServerCount"
 NAMESPACE = "default"
 
 
-def count_running_servers(filters: dict = None):
-    return len(kube.count_game_servers())
+def count_running_servers(game_type: str = None):
+    if game_type is None:
+        server_list = kube.api.list_pod_for_all_namespaces(label_selector=f"gaming.turnbros.app/role=server")
+    else:
+        server_list = kube.api.list_pod_for_all_namespaces(label_selector=f"gaming.turnbros.app/type={game_type}")
 
-
+    return len(server_list.items)
+    
 
 class Workflow:
     @workflow_method(task_queue=TASK_QUEUE)
     async def execute(self, payload: dict):
         
-        game_type = payload.get("gametype", False)
-        server_count = count_running_servers()
+        game_type = payload.get("gametype")
+        server_count = count_running_servers(game_type)
 
-        if game_type:
+        if game_type is not None:
             if server_count > 0:
                 return f"I found {server_count} running {game_type} servers"
             return f"Unfortunately I couldn't find any {game_type} servers..."
@@ -45,10 +49,6 @@ def get_temporal_ep():
         return "temporal-frontend.temporal.svc.cluster.local", 7233
     else:
         return "localhost", 7233
-
-
-
-
 
 async def worker_main():
     temporal_endpoint = get_temporal_ep()
