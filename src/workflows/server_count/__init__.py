@@ -38,6 +38,8 @@ class Workflow:
     async def execute(self, payload: dict):
         
         game_type = payload.get("gametype")
+        if game_type == '':
+            game_type = None
         server_count = count_running_servers(game_type)
 
         if game_type is not None:
