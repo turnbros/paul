@@ -36,7 +36,7 @@ spec:
           args: ["app-workers.py", "{{ $workflow.name }}"]
           envFrom:
             - secretRef:
-                name: discord-token
+                name: {{ include "paul.serviceAccountName" . }}-discord-token
           resources:
             {{- toYaml $.Values.resources | nindent 12 }}
       {{- with $.Values.nodeSelector }}

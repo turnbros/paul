@@ -15,5 +15,6 @@ class TestTemporalWorker(TemporalWorker):
 if __name__ == "__main__":
     print("starting")
     test_temporal_worker = TestTemporalWorker()
+    TestTemporalWorker().
     asyncio.run(test_temporal_worker.execute({}))
     print("done")
