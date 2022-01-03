@@ -38,7 +38,7 @@ spec:
               value: /paul/secrets/dialogflow_creds.json
           envFrom:
             - secretRef:
-                name: {{ include "paul.serviceAccountName" . }}-discord-token
+                name: {{ include "paul.fullname" . }}-discord-token
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -48,7 +48,7 @@ spec:
       volumes:
         - name: dialogflow-credentials
           secret:
-            secretName: {{ include "paul.serviceAccountName" . }}-dialogflow-credentials
+            secretName: {{ include "paul.fullname" . }}-dialogflow-credentials
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
