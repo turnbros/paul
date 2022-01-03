@@ -1,5 +1,5 @@
 import logging
-from workflows.worker import TemporalWorker
+from ..worker import TemporalWorker
 
 
 logging.basicConfig(level=logging.INFO)
