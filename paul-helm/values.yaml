@@ -6,6 +6,9 @@ workflows:
 - name: server_update
   replicas: 1
   task_queue: ServerUpdate
+- name: test_temporal_worker
+  replicas: 1
+  task_queue: ServerWorkflowTest
 
 temporal:
   host: temporal-frontend.temporal.svc.cluster.local
@@ -50,8 +53,6 @@ securityContext:
   readOnlyRootFilesystem: true
   runAsNonRoot: true
   runAsUser: 3240
-
-
 
 nodeSelector: {}
 tolerations: []
